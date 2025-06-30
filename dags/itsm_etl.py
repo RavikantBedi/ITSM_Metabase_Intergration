@@ -5,14 +5,12 @@ import requests
 import psycopg2
 import os
 
-
 def fetch_dashboard_data():
     # Use host.docker.internal for accessing host APIs from inside Docker
     url = "http://host.docker.internal:5000/dashboard-data"
     response = requests.get(url)
     response.raise_for_status()
     return response.json()
-
 
 def store_dashboard_data():
     import logging
@@ -64,7 +62,6 @@ def store_dashboard_data():
     cur.close()
     conn.close()
 
-
 # Define DAG
 default_args = {
     "start_date": datetime(2024, 1, 1),
@@ -72,7 +69,7 @@ default_args = {
 
 with DAG(
     dag_id="itsm_dashboard_etl",
-     schedule_interval="* * * * *",
+     schedule_interval="0 */3 * * *", 
     default_args=default_args,
     catchup=False
 ) as dag:
